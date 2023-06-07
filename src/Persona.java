@@ -92,4 +92,18 @@ public class Persona {
     public void setOcupacion(String ocupacion) {
         this.ocupacion = ocupacion;
     }
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", edad=" + edad +
+                ", barrio='" + barrio + '\'' +
+                ", dni='" + dni + '\'' +
+                ", ocupacion='" + ocupacion + '\'' +
+                ", numeroKit=" + numeroKit +
+                ", temperatura=" + temperatura +
+                '}';
+    }
 }

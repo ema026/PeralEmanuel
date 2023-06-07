@@ -1,13 +1,17 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
 public class Ssm {
     private LinkedHashSet<Persona> listaPersonas;
+
+    private ArrayList<CasoSospechoso> casosSospechosos;
     private Integer cantidadReactivos = 1000;
 
     public Ssm() {
         listaPersonas = new LinkedHashSet<>();
+        casosSospechosos = new ArrayList<CasoSospechoso>();
     }
 
 
@@ -35,10 +39,48 @@ public class Ssm {
 
             RegistroTemperatura registro = new RegistroTemperatura(persona.getDni(), persona.getTemperatura());
             tablaTemperaturas.put(persona.getNumeroKit(), registro);
-        }
 
+
+        if ( persona.getTemperatura()> 38) {
+            casosSospechosos.add(new CasoSospechoso(persona.getNumeroKit(), persona.getTemperatura(), persona.getBarrio()));
+        }
+    }
         return tablaTemperaturas;
     }
 
+        public void aislar() throws TemperaturaAltaException {
+            for (Persona persona : listaPersonas) {
+                if (persona.getTemperatura() >= 38.0) {
+                    throw new TemperaturaAltaException(persona.getNumeroKit(), persona.getBarrio());
+                }
+            }
+        }
+
+    private boolean esCasoSospechoso(int numeroKit) {
+        for (CasoSospechoso caso : casosSospechosos) {
+            if (caso.getNumeroKit() == numeroKit) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Persona> obtenerPersonasSinCasosSospechosos() {
+        ArrayList<Persona> personasSinCasosSospechosos = new ArrayList<>();
+        for (Persona persona : listaPersonas) {
+            if (!esCasoSospechoso(persona.getNumeroKit())) {
+                personasSinCasosSospechosos.add(persona);
+            }
+        }
+        return personasSinCasosSospechosos;
+    }
+
+    public ArrayList<CasoSospechoso> obtenerCasosSospechosos() {
+
+        return casosSospechosos;
+    }
+
 }
+
+
 

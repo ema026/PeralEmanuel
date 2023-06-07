@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Main {
     public static void main(String[] args)  {
 
@@ -15,5 +18,38 @@ public class Main {
         }catch (SinReactivosException e){
             System.out.println("No hay reactivos");
         }
+
+        HashMap<Integer, RegistroTemperatura> testeo = new HashMap<>();
+        testeo = ssm.testear();
+
+        for (HashMap.Entry<Integer, RegistroTemperatura> entry : testeo.entrySet()) {
+            int numeroKit = entry.getKey();
+            RegistroTemperatura registro = entry.getValue();
+            System.out.println("Kit: " + numeroKit + " | DNI: " + registro.getDni() + " | Temperatura: " + registro.getTemperatura());
+        }
+
+    try{
+        ssm.aislar();
     }
-}
+     catch (TemperaturaAltaException e) {
+        System.out.println("Temperatura alta detectada en el kit " + e.getNumeroKit() + " del barrio " + e.getBarrio());
+    }
+    
+
+        System.out.println("Personas sin casos sospechosos:");
+        ArrayList<Persona> personasSinCasosSospechosos = ssm.obtenerPersonasSinCasosSospechosos();
+        for (Persona persona : personasSinCasosSospechosos) {
+            System.out.println(persona);
+        }
+
+        System.out.println("\nCasos sospechosos:");
+        ArrayList<CasoSospechoso> casosSospechosos = ssm.obtenerCasosSospechosos();
+        for (CasoSospechoso caso : casosSospechosos) {
+            System.out.println("Kit: " + caso.getNumeroKit() + " | Temperatura: " + caso.getTemperatura() + " | Barrio: " + caso.getBarrio());
+        }
+    }
+
+
+    }
+
+
